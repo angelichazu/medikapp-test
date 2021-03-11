@@ -23,10 +23,11 @@ app.get('/', (req, res) => {
     res.send('Eiteck Back - CRUD PACIENTE \n' +
         'Metodos Disponibles: \n' +
         '/listarDoc  | Obtenemos los doctores disponibles \n' +
-        '/listar   | Obtenemos todos los pacientes \n' + 
-        '/agregar  | Es un metodo POST para agregar pacientes \n' +
-        '/agregarDoc |Es un metodo POST para agregar doctores \n' +
-        '/listar/:id  | Obtenemos el paciente por ID');
+        '/listar   | Obtenemos todos los pacientes \n' +
+        '/agregar  | Es un metodo POST para agregar pacientes - Usar Body\n' +
+        '/agregarDoc |Es un metodo POST para agregar doctores - Usar Body\n' +
+        '/listar/:id  | Obtenemos el paciente por ID \n' +
+        '/eliminar/:id  | Eliminamos el paciente mediante el ID');
 });
 
 // LISTAR DOCTORES
@@ -109,6 +110,20 @@ app.get('/listar/:id', (req, res) => {
         }
     });
 });
+
+
+// ELIMINAR PACIENTE
+
+app.delete('/eliminar/:id', (req, res) => {
+    const { id } = req.params;
+    const sql = `DELETE FROM paciente WHERE id= ${id}`;
+
+    connection.query(sql, error => {
+        if (error) throw error;
+        res.send('Paciente eliminado');
+    });
+});
+
 
 // VERIFICAR CONEXION
 connection.connect(error => {
