@@ -12,7 +12,8 @@ app.use(bodyParser.json());
 // CONFIGURACION DE BASE DE DATOS
 
 const connection = mysql.createConnection({
-    host: 'localhost',
+    host: 'mysql-22986-0.cloudclusters.net',
+    port: '22986',
     user: 'angel',
     password: 'angel4317',
     database: 'Medikapp'
