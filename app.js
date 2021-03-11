@@ -23,7 +23,10 @@ app.get('/', (req, res) => {
     res.send('Eiteck Back - CRUD PACIENTE \n' +
         'Metodos Disponibles: \n' +
         '/listarDoc  | Obtenemos los doctores disponibles \n' +
-        '/listar   | Obtenemos todos los pacientes');
+        '/listar   | Obtenemos todos los pacientes \n' + 
+        '/agregar  | Es un metodo POST para agregar pacientes \n' +
+        '/agregarDoc |Es un metodo POST para agregar doctores \n' +
+        '/listar/:id  | Obtenemos el paciente por ID');
 });
 
 // LISTAR DOCTORES
@@ -90,6 +93,22 @@ app.post('/agregar', (req, res) => {
     });
 });
 
+
+//LISTAR PACIENTE POR ID
+
+app.get('/listar/:id', (req, res) => {
+    const { id } = req.params;
+    const sql = `SELECT * FROM paciente WHERE id = ${id}`;
+    connection.query(sql, (error, result) => {
+        if (error) throw error;
+
+        if (result.length > 0) {
+            res.json(result);
+        } else {
+            res.send('No hay resultados');
+        }
+    });
+});
 
 // VERIFICAR CONEXION
 connection.connect(error => {
