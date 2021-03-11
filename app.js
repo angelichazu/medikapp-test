@@ -21,9 +21,9 @@ const connection = mysql.createConnection({
 // RUTA
 app.get('/', (req, res) => {
     res.send('Eiteck Back - CRUD PACIENTE \n' +
-            'Metodos Disponibles: \n'+
-            '/listarDoc  | Obtenemos los doctores disponibles \n' +
-            '/listar   | Obtenemos todos los pacientes');
+        'Metodos Disponibles: \n' +
+        '/listarDoc  | Obtenemos los doctores disponibles \n' +
+        '/listar   | Obtenemos todos los pacientes');
 });
 
 // LISTAR DOCTORES
@@ -51,6 +51,42 @@ app.get('/listar', (req, res) => {
         } else {
             res.send('No hay resultados');
         }
+    });
+});
+
+
+// AGREGAR DOCTOR
+
+app.post('/agregarDoc', (req, res) => {
+    const sql = 'INSERT INTO doctor SET ?';
+
+    const doctorObj = {
+        nombre: req.body.nombre,
+        especialidad: req.body.especialidad
+    };
+
+    connection.query(sql, doctorObj, error => {
+        if (error) throw error;
+        res.send('Doctor creado!');
+    });
+});
+
+
+// AGREGAR PACIENTE
+
+app.post('/agregar', (req, res) => {
+    const sql = 'INSERT INTO paciente SET ?';
+
+    const pacienteObj = {
+        id_doctor: req.body.id_doctor,
+        nombre: req.body.nombre,
+        telefono: req.body.telefono,
+        direccion: req.body.direccion
+    };
+
+    connection.query(sql, pacienteObj, error => {
+        if (error) throw error;
+        res.send('Paciente creado!');
     });
 });
 
