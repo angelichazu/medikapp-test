@@ -27,7 +27,8 @@ app.get('/', (req, res) => {
         '/agregar  | Es un metodo POST para agregar pacientes - Usar Body\n' +
         '/agregarDoc |Es un metodo POST para agregar doctores - Usar Body\n' +
         '/listar/:id  | Obtenemos el paciente por ID \n' +
-        '/eliminar/:id  | Eliminamos el paciente mediante el ID');
+        '/eliminar/:id  | Eliminamos el paciente mediante el ID \n' +
+        '/modificar/:id  | Metodo para modificar paciente - Campos a modificar: Nombre - Telfono - Direccion');
 });
 
 // LISTAR DOCTORES
@@ -124,6 +125,44 @@ app.delete('/eliminar/:id', (req, res) => {
     });
 });
 
+
+// MODIFICAR PACIENTE
+
+app.put('/modificar/:id', (req, res) => {
+    const { id } = req.params;
+    const {nombre, telefono, direccion } = req.body;
+    var sql = `UPDATE paciente SET nombre = '${nombre}', telefono='${telefono}', direccion='${direccion}' WHERE id =${id}`;
+    
+    if (nombre != null) {
+        if (telefono != null) {
+            if (direccion != null) {
+                res.send('SI FUNCIONA');
+                sql = `UPDATE paciente SET nombre = '${nombre}', telefono='${telefono}', direccion='${direccion}' WHERE id =${id}`;
+            } else {
+                sql = `UPDATE paciente SET nombre = '${nombre}', telefono='${telefono}' WHERE id =${id}`;
+            }
+        } else if (direccion != null) {
+            sql = `UPDATE paciente SET nombre = '${nombre}', direccion='${direccion}' WHERE id =${id}`;
+        } else {
+            sql = `UPDATE paciente SET nombre = '${nombre}' WHERE id =${id}`;
+        }
+    } else if (telefono != null) {
+        if (direccion != null) {
+            sql = `UPDATE paciente SET telefono='${telefono}', direccion='${direccion}' WHERE id =${id}`;
+        } else {
+            sql = `UPDATE paciente SET telefono='${telefono}' WHERE id =${id}`;
+        }
+    } else if (direccion != null) {
+        sql = `UPDATE paciente SET direccion='${direccion}' WHERE id =${id}`;
+    }
+
+    
+    connection.query(sql, error => {
+        if (error) throw error;
+        res.send('Paciente modificado!');
+    });
+});
+ 
 
 // VERIFICAR CONEXION
 connection.connect(error => {
